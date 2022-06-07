@@ -1,0 +1,42 @@
+.matero-page-header {
+  text-align: center;
+  display: block;
+  padding: 16px;
+  margin: -16px -16px 1px;
+  color: #fff;
+
+  .matero-breadcrumb {
+    margin-top: -5px;
+    margin-left: -2px;
+  }
+
+  .img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+  }
+
+  h1 {
+    font-size: 36px;
+    font-weight: 400;
+    margin: 0;
+  }
+
+  h4 {
+    font-size: 16px;
+    font-weight: 300;
+    max-width: 580px;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+
+}
+
+.mat-icon-xlg {
+  font-size: 46px;
+  line-height: 46px;
+  height: 46px;
+  width: 46px;
+  vertical-align: middle;
+}

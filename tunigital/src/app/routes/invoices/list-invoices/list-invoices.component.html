@@ -1,0 +1,124 @@
+<page-header title="Invoices" hideBreadcrumb>
+</page-header>
+
+<br>
+
+
+
+  <div fxLayout="row wrap" fxLayoutAlign="start" fxLayoutGap="15px grid">
+
+    <div fxFlex="50" fxFlex.sm="50">
+      <mat-form-field [style.fontSize.px]="14">
+        <mat-label>search</mat-label>
+        <input type="text"  #input matInput>
+      </mat-form-field>
+
+
+
+
+    </div>
+    <div fxFlex="50" fxLayoutAlign="end center">
+
+      <button mat-raised-button class="gradient-indigo"
+              (click)="openDialog(false)">Add Invoice</button>
+
+
+    </div>
+
+  </div>
+
+
+
+  <mat-divider></mat-divider><br>
+
+
+
+
+
+         <table mat-table [dataSource]="dataSource" matSort>
+
+          <ng-container matColumnDef="nb">
+            <th mat-header-cell *matHeaderCellDef width="10%">#</th>
+            <td mat-cell *matCellDef="let invoice; index as i">
+              {{(dataSource.data.indexOf(invoice)+1)}}</td>
+          </ng-container>
+          <mat-divider></mat-divider>
+
+          <ng-container matColumnDef="invoice">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header width="15%">Invoice
+            </th>
+            <td mat-cell *matCellDef="let invoice">{{ invoice.nomInvoice }}</td>
+          </ng-container>
+          <mat-divider></mat-divider>
+
+          <ng-container matColumnDef="order">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header width="15%">Order</th>
+            <td mat-cell *matCellDef="let invoice">{{ invoice.orderInvoice.nameOrder }}</td>
+          </ng-container>
+          <mat-divider></mat-divider>
+
+          <ng-container matColumnDef="company">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header width="15%">Company</th>
+            <td mat-cell *matCellDef="let invoice">{{ invoice.companyInvoice.nomCompany}}</td>
+          </ng-container>
+          <mat-divider></mat-divider>
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header width="15%">Date</th>
+            <td mat-cell *matCellDef="let invoice">{{ invoice.dateInvoice | date: 'dd/mm/yyyy'}}</td>
+          </ng-container>
+          <mat-divider></mat-divider>
+          <ng-container matColumnDef="status" width="15%">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status
+            </th>
+            <td mat-cell *matCellDef="let invoice">{{ invoice.statusInvoice ? 'Paid' : 'Unpaid' }}</td>
+          </ng-container>
+          <mat-divider></mat-divider>
+          <ng-container matColumnDef="cost">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header width="15%">Cost</th>
+            <td mat-cell *matCellDef="let invoice">{{ invoice.costInvoice }}</td>
+          </ng-container>
+          <mat-divider></mat-divider>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let invoice">
+              <button class="button24"
+              mat-icon-button
+                      matTooltip="Edit"
+
+                      >
+                <mat-icon class="icon24">create</mat-icon>
+              </button>
+              &nbsp;
+              <button class="button24" mat-icon-button color="warn"
+                      matTooltip="Delete"
+                     >
+                <mat-icon class="icon24">delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row
+          *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td *ngIf="input.value" class="mat-cell" colspan="4">
+          There is no company
+          "{{input.value}}"</td>
+
+
+      </tr>
+        </table>
+
+
+
+
+  <div *ngIf="invoices.length==0" fxLayoutAlign="center center">
+    <h4>No Invoices</h4>
+  </div>
+
+
+
+  <pagination-controls fxLayoutAlign="center center" *ngIf="invoices.length>item"
+                       previousLabel="Previous"
+                       directionLinks="false"
+                       nextLabel="Next">
+  </pagination-controls>

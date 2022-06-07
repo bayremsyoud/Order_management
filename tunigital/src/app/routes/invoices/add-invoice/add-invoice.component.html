@@ -1,0 +1,42 @@
+
+<div fxLayoutAlign="center">
+  <h2 mat-dialog-title >Add Invoice</h2>
+</div>
+<form [formGroup]="invoiceForm"  [style.fontSize.px]="14">
+  <div  fxLayout="row wrap" fxFlexFill
+       fxLayoutAlign="start start" fxLayoutGap="20px grid">
+
+
+       <div fxFlex="100">
+        <mat-form-field class="full" hintLabel="Select Order"
+                        appearance="legacy">
+          <mat-label>Order Employee</mat-label>
+          <mat-select  #input formControlName="order" >
+            <mat-option  *ngFor="let order of orders"  value="{{order._id}}">
+              {{order.nameOrder}}
+            </mat-option>
+          </mat-select>
+          <mat-error>
+            <span
+                  *ngIf="invoiceForm.controls.order.hasError('required')">{{'task.users'|translate}}
+              {{'task.is'}} <strong> {{'task.required'|translate}} </strong> </span>
+          </mat-error>
+          <mat-icon matSuffix>person</mat-icon>
+
+        </mat-form-field>
+      </div>
+
+  </div>
+</form>
+
+
+
+<mat-dialog-actions>
+  <button mat-flat-button  color="primary"
+          [disabled]="!invoiceForm.valid"
+          (click)="setInvoice()"
+          type="submit">
+    <span >Add</span>></button>
+  <button mat-flat-button (click)="close()" color="warn">Cancel</button>
+</mat-dialog-actions>
+

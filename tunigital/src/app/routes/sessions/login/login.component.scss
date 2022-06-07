@@ -1,0 +1,16 @@
+.separator{
+  display: flex;
+  align-items: center;
+}
+
+.separator .p{
+  color: gray;
+  padding: 0 1rem; /* creates the space */
+  font-size: small;
+}
+
+.separator .line{
+  flex: 1;
+  height: 1px;
+  background-color: gray;
+}

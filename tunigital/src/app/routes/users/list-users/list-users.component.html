@@ -1,0 +1,191 @@
+<page-header title="Users"  hideBreadcrumb="true">
+</page-header>
+<br>
+  <div class="filter" fxLayout="row wrap" fxLayoutGap="15px grid">
+    <div fxFlex="25" fxFlex.xs="50">
+      <mat-form-field appearance="outline" [style.fontSize.px]="14">
+        <mat-label>{{'user.items_per_page'|translate}}</mat-label>
+        <mat-select #items [(value)]="item" (selectionChange)="item=items.value;this.checkPage()">
+          <mat-option [value]="6"> 6 </mat-option>
+          <mat-option [value]="12"> 12 </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>list</mat-icon>
+      </mat-form-field>
+    </div>
+    <div fxFlex="25" fxFlex.xs="50">
+      <mat-form-field appearance="outline" matTooltip="{{ 'filter' | translate}}"
+                      [style.fontSize.px]="14">
+        <mat-label>{{'user.sort'|translate}}</mat-label>
+        <mat-select value="sort" >
+          <mat-option [value]="'desc'">Desc</mat-option>
+          <mat-option [value]="'asc'"> Asc </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>sort</mat-icon>
+      </mat-form-field>
+    </div>
+    <div fxFlex="25" fxFlex.xs="50">
+      <mat-form-field appearance="outline" [style.fontSize.px]="14">
+        <mat-label>{{'user.by_status'|translate}}</mat-label>
+        <mat-select [(value)]="selected" >
+          <mat-option [value]="'all'">{{'all'|translate}} </mat-option>
+          <mat-option [value]="'blocked'"> {{'user.blocked'|translate}} </mat-option>
+          <mat-option [value]="'active'"> {{'user.active'|translate}}</mat-option>
+          <mat-option [value]="'inactive'"> {{'user.inactive'|translate}} </mat-option>
+          <mat-option [value]="'unconfirmed'"> {{'user.email_not_confirmed'|translate}}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>filter_list</mat-icon>
+      </mat-form-field>
+    </div>
+    <div fxFlex="25" fxFlex.xs="50">
+      <mat-form-field appearance="outline" [style.fontSize.px]="14">
+        <mat-label>{{'user.by_role'|translate}}</mat-label>
+        <mat-select [(value)]="role" (selectionChange)="checkRole($event)">
+          <mat-option [value]="'all'">{{'all'|translate}} </mat-option>
+          <mat-option [value]="'manager'"> {{'register.manager'|translate}} </mat-option>
+          <mat-option [value]="'editor'"> {{'register.editor'|translate}}</mat-option>
+          <mat-option [value]="'maintainer'"> {{'register.maintainer'|translate}} </mat-option>
+          <mat-option [value]="'controller'"> {{'register.controller'|translate}}
+          </mat-option>
+          <mat-option [value]="'other'"> {{'register.other'|translate}}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>card_membership</mat-icon>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+  <div fxLayoutAlign="space-between">
+    <div>
+      <mat-form-field [style.fontSize.px]="14">
+        <mat-label>{{ "user.search" | translate}}</mat-label>
+        <input (keyup)="applyFilter($event)" type="text" matInput>
+      </mat-form-field>
+    </div>
+
+  </div>
+
+  <mat-divider></mat-divider><br>
+
+  <div class="users-wrapper">
+    <div fxLayout="row wrap">
+      <div fxFlex="50" fxFlex.gt-md="33.3" fxFlex.md="50"
+           fxFlex.sm="50" fxFlex.gt-lg="33.3"
+           fxFlex.xs="100"
+           class="p-2"
+           *ngFor="let user of users | paginate: { itemsPerPage: item, currentPage: page }">
+
+        <mat-card fxLayout="row" class="p-0 mat-elevation-z3 user-content card">
+          <div fxFlex="35" fxLayout="column" fxLayoutAlign="space-evenly stretch"
+               [class.gradient-amber]="user.isBlocked"
+               [class.gradient-indigo]="!user.isConfirmed&&!user.isBlocked"
+               [class.gradient-green]="user.isActive&&user.isConfirmed"
+               [class.gradient-blue]="!user.isActive&&user.isConfirmed">
+            <div class="user-img">
+              <img *ngIf="!user.imageUser" src="assets/images/default-user.png"
+                   [class.blocked]="user.isBlocked">
+              <img *ngIf="user.imageUser" [src]="'http://localhost:5000/' + user.imageUser"
+                   [class.blocked]="user.isBlocked">
+            </div>
+          </div>
+          <div fxFlex="65" class="user-details">
+            <div fxFlex="100" fxLayout="column">
+
+              <div fxflex="20">
+                <div fxLayout="row" style="height: 40px;" fxLayoutAlign="space-between center">
+                  <h4 *ngIf="!user.isBlocked">{{user.nomUser}}
+                    {{user.prenomUser}}</h4>
+                  <h4 *ngIf="user.isBlocked">{{ "user.user_blocked" | translate}}</h4>
+                  <button class="doNot" mat-icon-button [matMenuTriggerFor]="menu"
+                          #menuTrigger="matMenuTrigger">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                </div>
+                <mat-divider></mat-divider>
+              </div>
+
+
+
+              <mat-menu #menu="matMenu" xPosition="before" overlapTrigger="true">
+                <span (mouseleave)="menuTrigger.closeMenu()">
+                  <button *ngIf="user.isActive&&!user.isBlocked" (click)="openDialogView(user)"
+                          mat-menu-item>
+                    <mat-icon>settings</mat-icon>
+                    <span>{{ "user.turn_admin" | translate}}</span>
+                  </button>
+                  <button (click)="openDialog(user,'del')" mat-menu-item>
+                    <mat-icon>delete</mat-icon>
+                    <span>{{ "user.delete" | translate}}</span>
+                  </button>
+                  <button *ngIf="!user.isBlocked" (click)="openDialog(user,'block')" mat-menu-item>
+                    <mat-icon>block</mat-icon>
+                    <span>{{ "user.block" | translate}}</span>
+                  </button>
+                  <button *ngIf="user.isBlocked" (click)="blockUser(user,user._id)" mat-menu-item>
+                    <mat-icon>block</mat-icon>
+                    <span>{{ "user.unblock" | translate}}</span>
+                  </button>
+                  <button *ngIf="!user.isBlocked&&!user.isActive"
+                          (click)="activeUser(user,user._id)"
+                          mat-menu-item>
+                    <mat-icon *ngIf="!user.isActive">lock_open</mat-icon>
+                    <span *ngIf="!user.isActive">{{ "user.activate" | translate}}</span>
+                  </button>
+                </span>
+              </mat-menu>
+
+
+              <div fxFlex="80" class="bb" fxLayout="column"
+                   [class.blocked]="user.isBlocked">
+                <div fxFlex="25" fxLayout="row">
+                  <div fxLayoutGap="8px" fxLayoutAlign="space-between center">
+                    <mat-icon>card_membership</mat-icon>
+                    <span>{{(user.roleUser =='manager' ?'register.manager':(user.roleUser
+                      =='editor'?'register.editor':(user.roleUser
+                      =='controller'?'register.controller':(user.roleUser
+                      =='maintainer'?'register.maintainer':'register.other'))))|translate}}</span>
+                  </div>
+                </div>
+                <div fxFlex="25" fxLayout="row">
+                  <div fxLayoutGap="8px" fxLayoutAlign="space-between center">
+                    <mat-icon class="secondary-text-color">mail_outline</mat-icon>
+                    <span>{{user.emailUser}}</span>
+                  </div>
+                </div>
+                <div fxFlex="25" fxLayout="row">
+                  <div fxLayoutGap="8px" fxLayoutAlign="space-between center">
+                    <mat-icon class="secondary-text-color">call</mat-icon>
+                    <span>{{user.numUser}}</span>
+                  </div>
+                </div>
+                <div fxFlex="25" fxLayout="row">
+                  <div fxLayoutGap="8px" fxLayoutAlign="space-between center">
+                    <mat-icon class="secondary-text-color">person</mat-icon>
+                    <span fxLayoutAlign="center" *ngIf="user.isBlocked">{{ "user.blocked" |
+                      translate}}</span>
+                    <span fxLayoutAlign="center" *ngIf="!user.isBlocked">{{ (user.isConfirmed ?
+                      (user.isActive ? 'user.active' : 'user.inactive')
+                      :'user.email_not_confirmed') | translate
+                      }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div *ngIf=" users.length==0" fxLayoutAlign="center center">
+    <h4>{{ "user.no_data" | translate}}</h4>
+  </div>
+
+  <div fxLayoutAlign="center center">
+    <pagination-controls (directionLinks)="true" *ngIf="users.length>item" (pageChange)="onPageChanged($event)">
+    </pagination-controls>
+  </div>
+

@@ -1,0 +1,83 @@
+
+<page-header [title]="invoice.nomInvoice" hideBreadcrumb></page-header>
+<br>
+<div>
+  <div fxFlex="70"  class="mar">
+    <mat-card   >
+      <div class="aa" #pdfInvoice>
+        <header>
+          <h1>Invoice</h1>
+          <address >
+            <p>Bayrem Sioud</p>
+            <p>Cite Ezzohour<br>Sousse, TN 4031</p>
+            <p>+216 23766100</p>
+          </address>
+        </header>
+        <article>
+          <h1>Recipient</h1>
+          <address>
+            <p>{{invoice.companyInvoice.nomCompany}}<br>{{invoice.companyInvoice.companyRep}}</p>
+            <p>{{invoice.companyInvoice.emailCompany}}</p>
+            <p>{{invoice.companyInvoice.addressCompany}}</p>
+            <p>{{invoice.companyInvoice.numCompany}}</p>
+          </address>
+          <table class="meta">
+            <tr>
+              <th><span >Invoice #</span></th>
+              <td><span >IN{{invoice.dateInvoice | date:'mmddyy'}}</span></td>
+            </tr>
+            <tr>
+              <th><span >Date</span></th>
+              <td><span >{{invoice.dateInvoice | date:'mm/dd/yyyy'}}</span></td>
+            </tr>
+            <tr>
+              <th><span >Amount Due</span></th>
+              <td><span id="prefix" >$</span><span>{{invoice.costInvoice}}</span></td>
+            </tr>
+          </table>
+          <table class="inventory">
+            <thead>
+              <tr>
+                <th><span >Item</span></th>
+                <th><span e>Description</span></th>
+                <th><span >Rate</span></th>
+                <th><span>Quantity</span></th>
+                <th><span >Price</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a class="cut">-</a><span >{{invoice.orderInvoice.nameOrder}}</span></td>
+                <td><span >{{invoice.orderInvoice.descInvoice}}</span></td>
+                <td><span #prix >{{invoice.orderInvoice.prixOrder}}</span><span data-suffix>DT</span></td>
+                <td><span #qte >{{invoice.orderInvoice.qteOrder}}</span></td>
+                <td><span>{{invoice.orderInvoice.prixOrder*invoice.orderInvoice.qteOrder}}</span><span data-suffix>DT</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="balance">
+            <tr>
+              <th><span >Total HT</span></th>
+              <td><span>{{invoice.orderInvoice.prixOrder*invoice.orderInvoice.qteOrder}}</span><span data-prefix>DT</span></td>
+            </tr>
+            <tr>
+              <th><span >TVA = 19 %</span></th>
+              <td><span >{{(invoice.orderInvoice.prixOrder*invoice.orderInvoice.qteOrder)*0.19}}</span><span data-prefix>DT</span></td>
+            </tr>
+            <tr>
+              <th><span >Total TTC</span></th>
+              <td><span>{{invoice.costInvoice}}</span><span data-prefix>DT</span></td>
+            </tr>
+          </table>
+        </article>
+      </div>
+
+
+    </mat-card>
+
+  </div>
+  <div [fxFlex]="30">
+<button mat-button color="primary" (click)="downloadPDF()">Download</button>
+  </div>
+
+</div>

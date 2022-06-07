@@ -1,0 +1,83 @@
+<div class="w-full h-full" fxLayout="row wrap" style="background-color: white;">
+  <mat-card class="mat-elevation-z4 m-auto" style="max-width: 380px;">
+    <div *ngIf="!show">
+      <mat-card-title class="text-center m-b-24">Sign In</mat-card-title>
+
+    <form class="form-field-full" [formGroup]="loginForm">
+      <span style="color: red; font-weight: bold;" *ngIf="showWrong">{{this.wrong}}</span>
+      <div fxFlex="100">
+
+      <mat-form-field appearance="legacy">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="ng-matero" formControlName="email" required>
+        <mat-error *ngIf="email?.invalid">
+          <span *ngIf="email?.errors?.required">
+            Please enter your <strong>Email</strong>
+          </span>
+          <span *ngIf="email?.errors?.remote">
+            {{ email?.errors?.remote }}
+          </span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="legacy">
+        <mat-label>password</mat-label>
+        <input matInput placeholder="ng-matero" type="pass"
+               formControlName="password" required>
+        <mat-error *ngIf="pass?.invalid">
+          <span *ngIf="pass?.errors?.required">
+            Please enter your <strong>password</strong>
+          </span>
+          <span
+          *ngIf="loginForm.controls.password.hasError('minlength')">
+          password must be 8 characters </span>
+          <span *ngIf="pass?.errors?.remote">
+            {{ pass?.errors?.remote }}
+          </span>
+        </mat-error>
+      </mat-form-field>
+      </div>
+
+
+    </form>
+    <div [style.fontSize.px]="12" class="m-y-16" fxLayout="row" fxLayoutAlign="space-between center">
+
+      <a routerLink="/auth/reset_pass">Forgot Username/Password?
+       </a>
+    </div>
+    <button class="gradient-indigo" mat-raised-button style="width: 100%;"
+    [disabled]="!!loginForm?.invalid" [loading]="isSubmitting"
+    (click)="login()">Login</button>
+    &nbsp;
+    <div class="separator">
+      <div class="line"></div>
+      <div class="p">Or</div>
+      <div class="line"></div>
+    </div>
+    &nbsp;
+<a routerLink="/auth/register"> <button class="gradient-indigo" mat-raised-button style="width: 100%;">
+Register
+</button></a>
+    </div>
+
+<div *ngIf="show">
+  <div>
+    <h3 fxLayoutAlign="center">{{this.msg}}</h3>
+    <p [innerHtml]="desc"></p>
+    <p>{{desc2}} </p><br>
+    <div fxLayoutAlign="center" *ngIf="active">
+      <button mat-raised-button class="blue-btn">{{'login.confirm_my_emai'
+        |translate}}</button>
+    </div>
+
+    <br *ngIf="active">
+    <mat-divider></mat-divider><br>
+    <div class="m-t-16" fxLayoutAlign="center">{{'login.not_you' |translate}}
+      <a fxLayoutAlign="center" routerLink="/auth/login" style="color: #0d3a4e;"
+         (click)="back()"><strong>{{'login.login' |translate}}</strong></a>
+    </div>
+
+  </div>
+</div>
+  </mat-card>
+</div>

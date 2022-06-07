@@ -1,0 +1,21 @@
+<div fxLayoutAlign="space-between">
+  <h2 mat-dialog-title>{{ "clients.are_u_sure"}}</h2>
+  <button class="close" mat-icon-button (click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<mat-dialog-content>
+  <p><strong>{{ "clients.name" }} : </strong>{{company.nomCompany}}
+  </p>
+  <p><strong>{{ "clients.lname"}} : </strong>{{company.companyRep}}
+  </p>
+  <p><strong>{{ "clients.email"}} : </strong>{{company.emailCompany}}
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+
+  <button mat-flat-button [mat-dialog-close]="company._id" color="warn">{{ "clients.delete"}}</button>
+  <button mat-flat-button mat-dialog-close>{{ "clients.cancel"}}</button>
+
+</mat-dialog-actions>

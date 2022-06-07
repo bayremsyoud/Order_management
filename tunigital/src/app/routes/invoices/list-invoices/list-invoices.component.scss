@@ -1,0 +1,22 @@
+table {
+  width: 100%;
+  border: none;
+}
+
+
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:host {
+  overflow: auto;
+}
+
+.aa {
+  margin-right: 10px;
+}
+
+

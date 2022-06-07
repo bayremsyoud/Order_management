@@ -1,0 +1,92 @@
+<div fxLayoutAlign="space-between">
+  <h2 mat-dialog-title *ngIf="!company._id">Add Company</h2>
+  <h2 mat-dialog-title *ngIf="company._id">{{company.nomCompany}}
+  </h2>
+  <button class="close" mat-icon-button (click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<form [formGroup]="companyForm" [style.fontSize.px]="14">
+  <div  fxLayout="row wrap" fxFlexFill
+       fxLayoutAlign="start start" fxLayoutGap="20px grid">
+
+
+    <div fxFlex="50">
+      <mat-form-field hintLabel="max"
+                      appearance="legacy">
+        <mat-label>Company</mat-label>
+        <input maxlength="20" #nom formControlName="nomCompany" matInput>
+        <mat-hint align="end">{{nom.value?.length || 0}}/20</mat-hint>
+        <mat-icon matSuffix>face</mat-icon>
+        <mat-error>
+          <span *ngIf="companyForm.controls.nomCompany.hasError('required')"> Name is  <strong>required</strong></span>
+          <span *ngIf="companyForm.controls.nomCompany.hasError('minlength')">Enter a valid name}</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div fxFlex="50">
+      <mat-form-field hintLabel="max"
+                      appearance="legacy">
+        <mat-label>Representer</mat-label>
+        <input maxlength="20" #companyRep formControlName="companyRep" matInput>
+        <mat-hint align="end">{{companyRep.value?.length || 0}}/20</mat-hint>
+        <mat-icon matSuffix>face</mat-icon>
+        <mat-error>
+          <span *ngIf="companyForm.controls.companyRep.hasError('required')"> Representative name
+             <strong>required</strong></span>
+          <span *ngIf="companyForm.controls.companyRep.hasError('minlength')">Representative name must have 4 charachters</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div fxFlex="50">
+      <mat-form-field class="full" appearance="legacy">
+        <mat-label>Email</mat-label>
+        <input pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
+               formControlName="emailCompany" matInput>
+        <mat-hint>Ex. pat@example.com</mat-hint>
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-error>
+          <span *ngIf="companyForm.controls.emailCompany.hasError('pattern')">Enter a valid Email</span>
+          <span *ngIf="companyForm.controls.emailCompany.hasError('required')">Company Email<strong>required</strong></span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div fxFlex="50">
+      <mat-form-field appearance="legacy" floatPlaceholder="never">
+        <mat-label>{{ "companies.phone"}}</mat-label>
+        <input formControlName="numCompany" type="number"
+               oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+               minlength="8" maxlength="15" #tel matInput>
+        <mat-hint align="end">{{tel.value?.length || 0}}/15</mat-hint>
+        <mat-icon matSuffix>phone</mat-icon>
+        <mat-error>
+          <span *ngIf="companyForm.controls.numCompany.hasError('required')">Company Phone required <strong>{{ "companies.required" |
+              translate}}</strong></span>
+          <span *ngIf="companyForm.controls.numCompany.hasError('min')">Phone must have 8 numbers</span>
+          <span *ngIf=" companyForm.controls.numCompany.hasError('pattern')">This is not a valid
+            number</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+
+    <div fxFlex="100">
+      <mat-form-field appearance="legacy">
+        <mat-label>Address</mat-label>
+        <textarea maxlength="40" #add formControlName="addressCompany" matInput></textarea>
+        <mat-hint align="end">{{add.value?.length || 0}}/40</mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
+</form>
+
+
+
+<mat-dialog-actions>
+  <button mat-flat-button class="gradient-indigo" style="width: 100%;" [mat-dialog-close]="this.companyForm.value" color="primary"
+          [disabled]="!companyForm.valid"
+          type="submit">
+    <span *ngIf="!company._id">Add</span>
+    <span *ngIf="company._id">Update</span></button>
+</mat-dialog-actions>
+

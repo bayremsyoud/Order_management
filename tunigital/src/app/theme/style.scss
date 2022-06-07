@@ -1,0 +1,16 @@
+@use 'style/reboot';
+@use 'style/misc';
+@use 'style/colors';
+
+
+.snackbarred {
+  background-color: rgb(223, 39, 39);
+}
+
+.snackbargreen {
+  background-color: rgb(8, 156, 28);
+}
+
+.mat-list-cust {
+  font-size: 12px;
+}

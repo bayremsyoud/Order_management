@@ -1,0 +1,128 @@
+<page-header title="
+" hideBreadcrumb>
+
+<strong fxLayoutAlign="center">{{order.nameOrder}}
+</strong>
+
+
+
+</page-header>
+
+<mat-card class="mat-elevation-z5 w-100 ">
+
+
+  <mat-card-title >
+
+  </mat-card-title>
+
+  <mat-divider></mat-divider>
+
+
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item>
+        <div matLine>
+          <div fxFlex="25" fxLayout="row">
+            <div fxLayoutGap="8px" fxLayoutAlign="space-between center">
+              <mat-icon *ngIf="!order.statusOrder">refresh</mat-icon>
+              <mat-icon *ngIf="order.statusOrder">done</mat-icon>
+              <span>Order status: </span>
+              <span>
+
+                <mat-chip-list fxLayoutAlign="center">
+                  <span>
+                    <mat-chip [class.gradient-red]="!order.statusOrder"
+                              [class.gradient-green]="order.statusOrder">
+                      {{(order.statusOrder ?
+                      'project.completed' : 'project.in_progress')}}
+                    </mat-chip>
+                  </span>
+                </mat-chip-list>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div matLine>
+          <div fxFlex="25" fxLayout="row">
+            <div fxLayoutGap="8px" fxLayoutAlign="space-between center">
+              <mat-icon>person</mat-icon>
+              <span>Company: </span>
+              <span>{{order.companyOrder.nomCompany}}</span>
+            </div>
+          </div>
+        </div>
+        <div matLine>
+          <div fxFlex="25" fxLayout="row">
+            <div fxLayoutGap="8px" fxLayoutAlign="space-between center">
+              <mat-icon>date_range</mat-icon>
+              <span>Order Period :</span>
+              <span>{{order.dateDebutOrder |date:"dd/MM/yyyy"}} -
+                {{order.dateFinOrder |date:"dd/MM/yyyy"}} </span>
+            </div>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+    <h4>{{'project.finance'}}</h4>
+    <mat-divider></mat-divider>
+    <div matLine>
+
+      <h4><mat-icon>money</mat-icon>Order Description</h4>
+
+      <div fxFlex="25" fxLayout="row">
+        <div fxLayoutGap="8px" fxLayoutAlign="space-between center">
+
+          <span>Order description</span> <br>
+         <p><span>{{order.descOrder}}
+        </span></p>
+
+        </div>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <mat-list>
+      <mat-list-item>
+        <div matLine>
+          <div fxFlex="25" fxLayout="row">
+            <div fxLayoutGap="8px" fxLayoutAlign="space-between center">
+              <mat-icon>money</mat-icon>
+              <span>Unit Price: </span>
+
+              <span>{{order.prixOrder}}</span>
+            </div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div matLine>
+          <div fxFlex="25" fxLayout="row">
+            <div fxLayoutGap="8px" fxLayoutAlign="space-between center">
+              <mat-icon>money</mat-icon>
+              <span>Units Number: </span>
+
+              <span>{{order.qteOrder}}</span>
+            </div>
+          </div>
+        </div>
+
+          <div fxFlex="25" fxLayout="row">
+            <div fxLayoutGap="8px" fxLayoutAlign="space-between center">
+              <mat-icon>local_atm</mat-icon>
+              <span>Order cost: </span>
+              <span> {{order.costOrder}} </span>
+            </div>
+          </div>
+      </mat-list-item>
+      <mat-list>
+      </mat-list>
+      <div fxLayoutAlign="center">
+        <button  mat-raised-button
+  (click)="cancel()"
+                color="warn">
+          Back
+        </button>
+      </div>
+
+
+
+
+

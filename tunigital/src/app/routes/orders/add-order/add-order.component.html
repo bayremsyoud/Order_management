@@ -1,0 +1,276 @@
+ <page-header icon="work" title="Order Form" hideBreadcrumb></page-header>
+<mat-card>
+
+  <div fxLayoutAlign="center">
+    <mat-card-title *ngIf="!order._id"><strong>Add New Order</strong>
+    </mat-card-title>
+    <mat-card-title *ngIf="order._id"> <strong> {{order.nameOrder}}</strong></mat-card-title>
+  </div>
+
+
+
+  <br>
+  <form [formGroup]="orderForm" [style.fontSize.px]="14" (ngSubmit)="addOrder()">
+    <div  fxLayout="row wrap"
+         fxLayoutAlign="start start" fxLayoutGap="20px grid">
+      <div fxFlexOffset.xs="0" fxFlexOffset.sm="15" fxFlexOffset="25" fxFlex="50" fxFlex.xs="100"
+           fxFlex.sm="70">
+        <div fxLayout="row wrap" fxLayoutGap="10px grid">
+
+          <div fxFlex="50" fxFlex.xs="50" fxFlex.sm="50">
+            <mat-form-field hintLabel="max" class="full"
+                            appearance="legacy">
+              <mat-label>Order Name</mat-label>
+              <input maxlength="50" placeholder="Enter Order Name" #nom formControlName="nameOrder" matInput>
+              <mat-hint align="end">{{nom.value?.length || 0}}/50</mat-hint>
+              <mat-error>
+                <span
+                      *ngIf="orderForm.controls.nameOrder.hasError('required')">Order name is
+                       <strong>required</strong></span>
+                <span
+                      *ngIf="orderForm.controls.nameOrder.hasError('minlength')">Order name must at least 4 characters
+                    </span>
+              </mat-error>
+              <mat-icon matSuffix>work</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="50" fxFlex.xs="50" fxFlex.sm="50">
+            <mat-form-field hintLabel="Status" class="full"
+                            appearance="legacy">
+              <mat-label>Order Status</mat-label>
+              <mat-select maxlength="20" #nom formControlName="statusOrder" matInput>
+                <mat-option [value]="true">Completed</mat-option>
+                <mat-option [value]="false">In Progress</mat-option>
+              </mat-select>
+              <mat-error>
+                <span
+                      *ngIf="orderForm.controls.statusOrder.hasError('required')">Status order
+                       <strong>required</strong>
+                  </span>
+              </mat-error>
+              <mat-icon matSuffix>check_circle</mat-icon>
+
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="!order._id" fxFlex="50" fxFlex.xs="50" fxFlex.sm="50">
+            <mat-form-field hintLabel="start date"
+                            appearance="legacy">
+              <mat-label>Order Date</mat-label>
+              <input formControlName="dateDebutOrder" [min]="minDate"
+                     [max]="maxDate" matInput
+                     [matDatepicker]="picker1" readonly>
+              <mat-datepicker-toggle matSuffix [for]="picker1">
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+              <mat-error>
+                <span
+                      *ngIf="orderForm.controls.dateDebutOrder.hasError('required')">Start date
+                       <strong>required</strong></span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="order._id&&!checkD" fxFlex="50" fxFlex.xs="50" fxFlex.sm="50">
+            <mat-form-field hintLabel="{{'project.select_start_date'|translate}}"
+                            appearance="legacy">
+              <mat-label>{{'project.start_date'}}</mat-label>
+              <input formControlName="dateDebutOrder"
+                     [min]="this.order.dateDebutOrder"
+                     [max]="maxDate" matInput
+                     [matDatepicker]="picker0" readonly>
+              <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
+              <mat-datepicker #picker0>
+              </mat-datepicker>
+              <mat-error>
+                <span
+                      *ngIf="orderForm.controls.dateDebutOrder.hasError('required')">{{"project.start_date_req"}}
+                       <strong>{{ "project.required"}}</strong></span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="order._id&&checkD" fxFlex="50" fxFlex.xs="50" fxFlex.sm="50">
+            <mat-form-field hintLabel="{{'project.select_start_date'}}"
+                            appearance="legacy">
+              <mat-label>{{'project.start_date'}}</mat-label>
+              <input formControlName="dateDebutOrder"
+                     [max]="maxDate" matInput
+                     [matDatepicker]="picker1" readonly>bb
+              <mat-datepicker-toggle matSuffix disabled [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1>
+              </mat-datepicker>
+              <mat-error>
+                <span
+                      *ngIf="orderForm.controls.dateDebutOrder.hasError('required')">{{"project.start_date_req"}}
+                       <strong>{{ "project.required"}}</strong></span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="order._id&&disable2" fxFlex="50" fxFlex.xs="50" fxFlex.sm="50">
+            <mat-form-field class="full" hintLabel="{{'project.select_end_date'}"
+                            appearance="outline">
+              <mat-label>{{'project.end_date'}}</mat-label>
+              <input formControlName="dateFinOrder"
+                     [min]="minDate" [max]="maxDate" matInput
+                     [matDatepicker]="picker2" readonly>
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+              <mat-error>
+                <span
+                      *ngIf="orderForm.controls.dateFinOrder.hasError('required')">{{"project.end_date_req"}}
+                      <strong>{{ "project.required"}}</strong></span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="order._id&&!disable2" fxFlex="50" fxFlex.xs="50" fxFlex.sm="50">
+            <mat-form-field class="full" hintLabel="{{'project.select_end_date'|translate}}"
+                            appearance="legacy">
+              <mat-label>{{'project.end_date'}}</mat-label>
+              <input formControlName="dateFinOrder"
+                     [min]="orderForm.controls.dateDebutOrder.value" [max]="maxDate" matInput
+                     [matDatepicker]="picker2" readonly>
+              <mat-datepicker-toggle matSuffix disabled [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+              <mat-error>
+                <span
+                      *ngIf="orderForm.controls.dateFinOrder.hasError('required')">{{"project.end_date_req"}}
+                      <strong>{{ "project.required"}}</strong></span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div *ngIf="!order._id" fxFlex="50" fxFlex.xs="50" fxFlex.sm="50">
+            <mat-form-field class="full" hintLabel="{{'project.select_end_date'|translate}}"
+                            appearance="legacy">
+              <mat-label>{{'project.end_date'}}</mat-label>
+              <input formControlName="dateFinOrder"
+                     [min]="orderForm.controls.dateDebutOrder.value" [max]="maxDate" matInput
+                     [matDatepicker]="picker3" readonly>
+              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+              <mat-datepicker #picker3></mat-datepicker>
+              <mat-error>
+                <span
+                      *ngIf="orderForm.controls.dateFinOrder.hasError('required')">{{"project.end_date_req"}}
+                      <strong>{{ "project.required"}}</strong></span>
+              </mat-error>
+            </mat-form-field>
+
+          </div>
+
+          <div fxFlex="50" fxFlex.xs="40" fxFlex.sm="40">
+            <mat-form-field hintLabel="{{'project.select_client'|translate}}" class="full"
+                            appearance="legacy">
+              <mat-label>{{'project.client'}}</mat-label>
+              <mat-select formControlName="companyOrder" disableRipple>
+                <mat-option *ngFor="let client of clients" value="{{client._id}}">
+                  {{client.nomCompany}}
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>person</mat-icon>
+              <mat-error>
+                <span
+                      *ngIf="orderForm.controls.companyOrder.hasError('required')">{{"project.client_project_req"}} <strong>{{ "project.required" |
+                    translate}}</strong></span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="25" fxFlex.xs="30" fxFlex.sm="30">
+            <mat-form-field class="full" hintLabel="{{'project.price_per'|translate}}"
+                            appearance="legacy">
+              <mat-label>{{'project.price'|translate}}</mat-label>
+
+              <input formControlName="prixOrder" type="number"
+                     oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                     minlength="8" maxlength="10" #tel matInput>
+              <mat-hint align="end">{{tel.value?.length || 0}}/10</mat-hint>
+              <mat-icon matSuffix>attach_money</mat-icon>
+              <mat-error>
+                <span
+                      *ngIf="orderForm.controls.prixOrder.hasError('required')">{{"project.prix_project_req"}}
+                      <strong>{{ "project.required"}}</strong></span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="25" fxFlex.xs="30" fxFlex.sm="30">
+            <mat-form-field class="full" hintLabel="{{'project.price_per'|translate}}"
+                            appearance="legacy">
+              <mat-label>{{'project.price'|translate}}</mat-label>
+
+              <input formControlName="qteOrder" type="number"
+                     oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                     minlength="8" maxlength="10" #tel matInput>
+              <mat-hint align="end">{{tel.value?.length || 0}}/10</mat-hint>
+              <mat-icon matSuffix>attach_money</mat-icon>
+              <mat-error>
+                <span
+                      *ngIf="orderForm.controls.prixOrder.hasError('required')">{{"project.prix_project_req"}}
+                      <strong>{{ "project.required"}}</strong></span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+
+          <div fxFlex="100">
+            <mat-form-field class="full" hintLabel="Select Employee"
+                            appearance="legacy">
+              <mat-label>Order Employee</mat-label>
+              <mat-select formControlName="employeeOrder" multiple>
+                <mat-option *ngFor="let user of userChose" [value]="user._id">
+                  {{user.nomUser}}
+                  {{user.prenomUser}}
+                </mat-option>
+              </mat-select>
+              <mat-error>
+                <span
+                      *ngIf="orderForm.controls.employeeOrder.hasError('required')">{{'task.users'|translate}}
+                  {{'task.is'}} <strong> {{'task.required'|translate}} </strong> </span>
+              </mat-error>
+              <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+          </div>
+
+
+          <div fxFlex="100" fxFlex.xs="100" fxFlex.sm="100">
+            <mat-form-field appearance="legacy">
+              <mat-label>{{'project.description'}}</mat-label>
+              <textarea placeholder="Description" rows="5" cols="40" maxlength="1000" #add formControlName="descOrder"
+                        matInput></textarea>
+              <mat-hint align="end">{{add.value?.length || 0}}/1000</mat-hint>
+            </mat-form-field>
+
+
+          </div>
+
+
+
+
+
+          <div fxFlex="100">
+            <mat-card-actions fxLayoutAlign="center">
+              <button color="primary" mat-flat-button
+                      [disabled]="!orderForm.valid"
+                      type="submit">
+                    <span *ngIf="order._id">Update</span>
+                    <span *ngIf="!order._id">Add</span>
+                    </button>
+
+              <button style="margin-left: 5px;" mat-flat-button (click)="cancel()"
+                      color="warn">Cancel</button>
+            </mat-card-actions>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+  </form>
+
+</mat-card>
+
+
+

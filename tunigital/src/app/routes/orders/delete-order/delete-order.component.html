@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Are you sure ?</h2>
+<mat-dialog-content>
+  <p><strong>Order Name : </strong>{{order.nameOrder}}
+  </p>
+  <p><strong>Client : </strong>{{order.companyOrder.nomCompany}}
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+
+  <button mat-flat-button [mat-dialog-close]="order._id" color="warn">Delete</button>
+  <button mat-flat-button mat-dialog-close>Cancel</button>
+
+</mat-dialog-actions>

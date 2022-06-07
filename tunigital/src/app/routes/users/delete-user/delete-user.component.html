@@ -1,0 +1,33 @@
+<div *ngIf="action==='del'">
+  <h2 mat-dialog-title>{{ "clients.are_u_sure" | translate}}</h2>
+  <mat-dialog-content>
+    <p><strong>{{ "clients.name" | translate}} : </strong>{{user.nomUser}}
+    </p>
+    <p><strong>{{ "clients.lname" | translate}} : </strong>{{user.prenomUser}}
+    </p>
+    <p><strong>{{ "clients.email" | translate}} : </strong>{{user.emailUser}}
+    </p>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+
+    <button mat-flat-button [mat-dialog-close]="user._id" color="warn">{{ "clients.delete" |
+      translate}}</button>
+    <button mat-flat-button mat-dialog-close>{{ "clients.cancel" | translate}}</button>
+  </mat-dialog-actions>
+</div>
+
+<div *ngIf="action==='block'">
+  <mat-dialog-content>
+    <p><strong> {{user.nomUser}} {{user.prenomUser}} </strong>{{ "user.msg_block" | translate}}
+    </p>
+    <p>{{ "user.msg_block2" | translate}} </p>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+
+    <button mat-flat-button [mat-dialog-close]="user._id" color="warn">{{ "user.block" |
+      translate}}</button>
+    <button mat-flat-button mat-dialog-close>{{ "user.cancel" | translate}}</button>
+  </mat-dialog-actions>
+</div>
